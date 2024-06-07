@@ -57,12 +57,13 @@ if %errorlevel% neq 0 (
 )
 
 echo Scripts executed successfully.
-
-REM Change to the directory containing the Processor script output file
-cd %CURRENT_DIR%\Project\Processor
+REM Delete the existing OutputInform.xlsx in Project\Project if it exists
+if exist ..\OutputInform.xlsx (
+    del ..\OutputInform.xlsx
+)
 
 REM Move the OutputInform.xlsx file to the Project directory
-move OutputInform.xlsx %CURRENT_DIR%\Project
+move OutputInform.xlsx ..\..\
 
 REM Check if the move command completed successfully
 if %errorlevel% neq 0 (

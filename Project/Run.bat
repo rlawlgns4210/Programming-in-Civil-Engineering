@@ -1,24 +1,27 @@
 @echo off
+REM Set the current directory to the directory of the batch file
+cd /d "%~dp0"
+
 REM Save the current directory
 set CURRENT_DIR=%cd%
 
 REM Create a virtual environment if it doesn't exist
-if not exist %CURRENT_DIR%\.venv (
+if not exist "%CURRENT_DIR%\.venv" (
     echo Creating virtual environment...
-    python -m venv %CURRENT_DIR%\.venv
+    python -m venv "%CURRENT_DIR%\.venv"
 )
 
 REM Change to the directory containing the virtual environment
-cd %CURRENT_DIR%\.venv\Scripts
+cd "%CURRENT_DIR%\.venv\Scripts"
 
 REM Activate the virtual environment
 call activate
 
 REM Change to the directory containing the Project directory
-cd %CURRENT_DIR%\Project
+cd "%CURRENT_DIR%\Project"
 
 REM Install required Python packages
-pip install -r %CURRENT_DIR%\Project\requirements.txt
+pip install -r "%CURRENT_DIR%\Project\requirements.txt"
 
 REM Check if the pip install command completed successfully
 if %errorlevel% neq 0 (
@@ -28,7 +31,7 @@ if %errorlevel% neq 0 (
 )
 
 REM Change to the directory containing the GUI script
-cd %CURRENT_DIR%\Project\GUI
+cd "%CURRENT_DIR%\Project\GUI"
 
 REM Run the GUI script
 python GUI_test.py
@@ -44,7 +47,7 @@ REM Pause to allow user to see the output
 pause
 
 REM Change to the directory containing the main script
-cd %CURRENT_DIR%\Project\Processor
+cd "%CURRENT_DIR%\Project\Processor"
 
 REM Run the main script
 python main.py

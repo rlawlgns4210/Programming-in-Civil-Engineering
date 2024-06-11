@@ -42,7 +42,7 @@ def draw_addition_bridge_and_forces(forces, stresses, height, num_panels):
         if i == 0:
             # 높이 치수선 (맨 왼쪽 삼각형만)
             plt.annotate('', xy=(left_x - 1, base_y), xytext=(left_x - 1, apex_y), arrowprops=dict(arrowstyle='<->'))
-            plt.text(left_x - 1.5, base_y + height / 2, f'{height:.1f}m', ha='center', va='center', rotation='vertical')
+            plt.text(left_x - 1.5, base_y + height / 2, f'{height:.1f} m', ha='center', va='center', rotation='vertical')
             
             # 내각 치수선 (호 그리기)
             arc_radius = 3
@@ -64,7 +64,7 @@ def draw_addition_bridge_and_forces(forces, stresses, height, num_panels):
     # 전체 길이 치수선
     total_length = num_panels * base_length
     plt.annotate('', xy=(0, -2), xytext=(total_length, -2), arrowprops=dict(arrowstyle='<->'))
-    plt.text(total_length / 2, -2.5, f'{total_length:.1f}m', ha='center', va='center')
+    plt.text(total_length / 2, -2.5, f'{total_length:.1f} m', ha='center', va='center')
 
     # 위 꼭지점들을 직선으로 연결
     apex_x_points, apex_y_points = zip(*apex_points)
@@ -73,7 +73,7 @@ def draw_addition_bridge_and_forces(forces, stresses, height, num_panels):
     # 꼭지점 직선 길이 치수선
     plt.annotate('', xy=(apex_x_points[0], apex_y_points[0] + 1), xytext=(apex_x_points[-1], apex_y_points[-1] + 1), arrowprops=dict(arrowstyle='<->'))
     apex_line_length = np.sqrt((apex_x_points[-1] - apex_x_points[0]) ** 2 + (apex_y_points[-1] - apex_y_points[0]) ** 2)
-    plt.text((apex_x_points[0] + apex_x_points[-1]) / 2, apex_y_points[0] + 1.5, f'{apex_line_length:.1f}m', ha='center', va='center')
+    plt.text((apex_x_points[0] + apex_x_points[-1]) / 2, apex_y_points[0] + 1.5, f'{apex_line_length:.1f} m', ha='center', va='center')
 
     # 그래프 제목 설정
     plt.title('추가 교량')

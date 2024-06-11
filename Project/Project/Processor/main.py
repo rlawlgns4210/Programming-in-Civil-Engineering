@@ -1,6 +1,8 @@
 import os
 import sys
 import numpy as np
+from openpyxl import load_workbook
+from openpyxl.drawing.image import Image
 
 # 현재 파일의 디렉토리 경로를 기준으로 상위 폴더 경로 설정
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -178,16 +180,38 @@ if df is not None and not df.empty:  # 데이터 프레임이 비어있는지 �
     # 높이 계산
     height = 10 / 2 * np.tan(np.arctan(2))
 
-    # 그래프 그리기
-    draw_bridge_and_forces(main_bridge.member_forces, main_bridge.stress_forces, height)
+    # 그래프 저장 경로 설정
+    main_bridge_image_path = os.path.join(output_dir, 'main_bridge.png')
+    side_bridge_image_path = os.path.join(output_dir, 'side_bridge.png')
+    addition_bridge_image_path = os.path.join(output_dir, 'addition_bridge.png')
+
+    # 그래프 그리기 및 저장
+    draw_bridge_and_forces(main_bridge.member_forces, main_bridge.stress_forces, height, save_path=main_bridge_image_path)
     
     if side_bridge_executed:
-        draw_side_bridge_and_forces(side_bridge.member_forces, side_bridge.stress_forces, height, remaining_bridge_length, num_panels)
+        draw_side_bridge_and_forces(side_bridge.member_forces, side_bridge.stress_forces, height, remaining_bridge_length, num_panels, save_path=side_bridge_image_path)
     
     if addition_bridge_executed:
-        draw_addition_bridge_and_forces(addition_bridge.member_forces, addition_bridge.stress_forces, height, num_panels)
+        draw_addition_bridge_and_forces(addition_bridge.member_forces, addition_bridge.stress_forces, height, num_panels, save_path=addition_bridge_image_path)
     
     # OutputInform.xlsx 파일 저장
     save_output_info(main_bridge, side_bridge if side_bridge_executed else None, addition_bridge if addition_bridge_executed else None, num_bridges, num_side_bridge, num_addition_bridge, remaining_bridge_length, steel_material, num_panels)
+
+    # 그래프 이미지 추가
+    workbook = load_workbook('OutputInform.xlsx')
+    if main_bridge_image_path:
+        img = Image(main_bridge_image_path)
+        img.anchor = 'F2'
+        workbook['mainbridge'].add_image(img)
+    if side_bridge_image_path and side_bridge_executed:
+        img = Image(side_bridge_image_path)
+        img.anchor = 'F2'
+        workbook['sidebridge'].add_image(img)
+    if addition_bridge_image_path and addition_bridge_executed:
+        img = Image(addition_bridge_image_path)
+        img.anchor = 'F2'
+        workbook['additionbridge'].add_image(img)
+
+    workbook.save('OutputInform.xlsx')
 else:
     print("Failed to load data from Excel.")

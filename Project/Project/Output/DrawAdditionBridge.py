@@ -53,7 +53,7 @@ def draw_addition_bridge_and_forces(forces, stresses, height, num_panels):
             angle_deg = np.degrees(a)
             arc_end_x = left_x + arc_radius * np.cos(np.radians(angle_deg / 2))
             arc_end_y = left_y + arc_radius * np.sin(np.radians(angle_deg / 2))
-            plt.text(arc_end_x + 0.5, arc_end_y, f'{angle_deg:.1f}°', ha='center', va='center')
+            plt.text(arc_end_x + 0.5, arc_end_y, f'{angle_deg:.2f}°', ha='center', va='center')
 
         # 시작점과 끝점 표시 (투명도 조절)
         if i == 0:

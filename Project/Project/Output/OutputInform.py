@@ -38,7 +38,11 @@ def save_output_info(main_bridge, side_bridge=None, addition_bridge=None, num_br
     for i in range(len(main_bridge_forces)):
         force = main_bridge_forces[i]
         stress = main_bridge_stresses[i] # N/mm^2
-        below_yield_strength = "O" if stress < yield_strength else "X"
+        if abs(stress) < yield_strength:
+            below_yield_strength = "O"
+        elif abs(stress) >= yield_strength:
+            below_yield_strength = "X"
+        # below_yield_strength = "O" if stress < yield_strength else "X"
         mainbridge_data.append([f"F{i+1}", force, stress, yield_strength, below_yield_strength])
 
     # 데이터프레임 생성
@@ -57,7 +61,11 @@ def save_output_info(main_bridge, side_bridge=None, addition_bridge=None, num_br
                 force_label = f"F{i-1}"
             force = side_bridge_forces[i]
             stress = side_bridge_stresses[i]  # N/mm^2
-            below_yield_strength = "O" if stress < yield_strength else "X"
+            if abs(stress) < yield_strength:
+                below_yield_strength = "O"
+            elif abs(stress) >= yield_strength:
+                below_yield_strength = "X"
+            # below_yield_strength = "O" if stress < yield_strength else "X"
             sidebridge_data.append([force_label, force, stress, yield_strength, below_yield_strength])
         df3 = pd.DataFrame(sidebridge_data, columns=["부재력번호", "부재력", "부재응력", "항복강도", "부재응력<항복강도"])
     
@@ -74,7 +82,11 @@ def save_output_info(main_bridge, side_bridge=None, addition_bridge=None, num_br
                 force_label = f"F{i-1}"
             force = addition_bridge_forces[i]
             stress = addition_bridge_stresses[i]  # N/mm^2
-            below_yield_strength = "O" if stress < yield_strength else "X"
+            if abs(stress) < yield_strength:
+                below_yield_strength = "O"
+            elif abs(stress) >= yield_strength:
+                below_yield_strength = "X"
+            # below_yield_strength = "O" if abs(stress) < yield_strength else "X"
             additionbridge_data.append([force_label, force, stress, yield_strength, below_yield_strength])
         df4 = pd.DataFrame(additionbridge_data, columns=["부재력번호", "부재력", "부재응력", "항복강도", "부재응력<항복강도"])
     
